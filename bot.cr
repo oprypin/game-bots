@@ -400,15 +400,14 @@ def put_found(state, only_auto = false)
   end
 end
 
-def check_auto(state, check)
-  state.stacks.each do |stack|
-    stack.each do |card|
-      if (number = card.number) && number < check.number.not_nil! && number > 1# && state.found_number(card.suit.not_nil!)
-        return false
-      end
-    end
-  end
-  true
+def check_auto(state, card)
+  number = card.number.not_nil!
+  return true if number <= 2
+
+  min_found = Suit.values.map { |suit| state.found_number(suit) } .min
+  return true if number - 1 <= min_found
+
+  false
 end
 
 
