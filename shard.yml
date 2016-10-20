@@ -1,0 +1,9 @@
+name: shenzhen
+version: 1.0.0
+
+authors:
+  - Oleh Prypin <oleh@pryp.in>
+
+dependencies:
+  stumpy_png:
+    github: l3kn/stumpy_png
