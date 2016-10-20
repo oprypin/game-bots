@@ -90,7 +90,7 @@ class State
   property flower : Card? = nil
   property found = StaticArray(Card?, 3).new(nil)
 
-  def_equals_and_hash stacks, free, flower, found
+  def_equals_and_hash stacks.to_set, free.to_set, flower, found.to_set
   def_clone
 
   property score = 0
