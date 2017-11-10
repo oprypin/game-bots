@@ -1,0 +1,18 @@
+name: opus
+version: 1.0.0
+
+authors:
+  - Oleh Prypin <oleh@pryp.in>
+
+dependencies:
+  stumpy_core:
+    github: stumpycr/stumpy_core
+    version: "~> 1.8.2"
+  stumpy_png:
+    github: stumpycr/stumpy_png
+    version: "~> 4.2.1"
+  crystal-fann:
+    github: NeuraLegion/crystal-fann
+    commit: "c33072fd521d164db6c5e3b79b3f8c35aeeba523"
+
+crystal: 0.23.1
