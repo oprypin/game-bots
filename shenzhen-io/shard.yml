@@ -1,9 +1,15 @@
 name: shenzhen
-version: 1.0.0
+version: 1.0.1
 
 authors:
   - Oleh Prypin <oleh@pryp.in>
 
 dependencies:
+  stumpy_core:
+    github: stumpycr/stumpy_core
+    version: "~> 1.8.2"
   stumpy_png:
-    github: l3kn/stumpy_png
+    github: stumpycr/stumpy_png
+    version: "~> 4.2.1"
+
+crystal: 0.23.1

@@ -33,13 +33,13 @@ end
 
 TOP_Y = 135
 
-FREE = 414.step(800, 152).to_a.map { |x| {x, TOP_Y} }
+FREE = (414..800).step(152).to_a.map { |x| {x, TOP_Y} }
 FLOWER = {982, TOP_Y}
-FOUND = 1174.step(1500, 152).to_a.map { |x| {x, TOP_Y} }
-BTN = 160.step(350, 83).to_a.map { |y| {888, y} }
+FOUND = (1174..1500).step(152).to_a.map { |x| {x, TOP_Y} }
+BTN = (160..350).step(83).to_a.map { |y| {888, y} }
 
-STACKS_X = 414.step(1500, 152).to_a
-STACKS_Y = 399.step(900, 31).to_a
+STACKS_X = (414..1500).step(152).to_a
+STACKS_Y = (399..900).step(31).to_a
 
 
 alias ImageHash = Array({Int32, Int32, {UInt8, UInt8, UInt8}})
@@ -453,5 +453,5 @@ end
 
 #puts commands.join("\n")
 if ARGV.empty?
-  Process.run("xdotool", ["-"], input: MemoryIO.new(commands.join("\n")))
+  Process.run("xdotool", ["-"], input: IO::Memory.new(commands.join("\n")))
 end

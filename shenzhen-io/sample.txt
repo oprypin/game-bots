@@ -1,5 +1,5 @@
-r1 g9 b8 f  g4 r3 g7 b
-b7 b9 r5 g2 r  b5 g  g6
-r8 b  b4 r7 g8 r  g1 r
-r2 g  b3 b6 g  b  r  b1
-g5 b  g3 b2 g  r4 r6 r9
+b4 r7 g9 b7 r  b  g5 f
+r6 b2 b1 g3 b  r4 r2 g2
+r5 r1 r  g1 g  r9 r8 r
+g  g  g6 b  b  b5 g8 r3
+r  b8 g4 g  b3 g7 b9 b6
