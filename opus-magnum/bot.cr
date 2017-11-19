@@ -216,6 +216,7 @@ end
 
 def step(state : State)
   frees = frees(state).shuffle
+  buckets = frees.group_by { |a| state[a] }
   frees.each do |a|
     frees.each do |b|
       next if a == b
@@ -239,6 +240,14 @@ def step(state : State)
         when ma, Marble::Salt
           yield Set{a, b}
         end
+      when Marble::Quintessence
+        Array.each_product(
+          [a], buckets[Marble::Air], buckets[Marble::Fire],
+          buckets[Marble::Water], buckets[Marble::Earth], reuse: true
+        ) do |product|
+          yield product.to_set
+        end rescue nil
+        break
       else
         break
       end
