@@ -1,6 +1,9 @@
+require "nonograms/nonogram"
+require "crystal-fann"
 require "stumpy_core"
 require "stumpy_png"
-require "crystal-fann"
+require "x_do"
+
 
 enum Marble
   None = -1
@@ -273,15 +276,17 @@ if !solution
   abort "Unsolvable"
 end
 
-solution.each do |step|
-  w = "sleep 0.05"
-  step.each do |coord|
-    x, y = img_pos(*coord)
-    commands << "mousemove #{x} #{y}" << w << "mousedown 1" << w << "mouseup 1" << w
-  end
-end
-
-#puts commands.join("\n")
 if ARGV.empty?
-  Process.run("xdotool", ["-"], input: IO::Memory.new(commands.join("\n")))
+  window = XDo.new.active_window
+  solution.each do |step|
+    step.each do |coord|
+      x, y = img_pos(*coord)
+      window.move_mouse(x, y)
+      sleep 0.05
+      window.mouse_down(:left)
+      sleep 0.05
+      window.mouse_up(:left)
+      sleep 0.05
+    end
+  end
 end

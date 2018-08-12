@@ -5,14 +5,23 @@ authors:
   - Oleh Prypin <oleh@pryp.in>
 
 dependencies:
+  nonograms:
+    github: oprypin/crystal-nonograms
+  crystal-fann:
+    github: NeuraLegion/crystal-fann
+    version: "~> 1.1.1"
   stumpy_core:
     github: stumpycr/stumpy_core
     version: "~> 1.8.2"
   stumpy_png:
     github: stumpycr/stumpy_png
-    version: "~> 4.2.1"
-  crystal-fann:
-    github: NeuraLegion/crystal-fann
-    commit: "c33072fd521d164db6c5e3b79b3f8c35aeeba523"
+    version: "~> 4.4.1"
+  x_do:
+    github: woodruffw/x_do.cr
+    version: "~> 0.7.1"
 
-crystal: 0.23.1
+targets:
+  bot:
+    main: bot.cr
+
+crystal: 0.25.1

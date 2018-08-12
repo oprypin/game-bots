@@ -1,5 +1,6 @@
-require "stumpy_png"
 require "nonograms/nonogram"
+require "stumpy_png"
+require "x_do"
 
 
 struct Rect(T)
@@ -212,41 +213,42 @@ def recognize_field(img)
 end
 
 class SolutionClicker
-  def initialize(@field : Nonogram, @play_area : Rect(Int32))
-    @xdotool = Process.new("xdotool", ["-"], input: nil)
-    @xdotool.input.flush_on_newline = true
-    @done = Set({Int32, Int32}).new
-  end
+  @window : XDo::Window
 
-  private def send(*cmd)
-    s = (cmd.join(' ') + '\n')
-    @xdotool.input.write(s.to_slice)
+  def initialize(@field : Nonogram, @play_area : Rect(Int32))
+    @window = XDo.new.active_window
+    @done = Set({Int32, Int32}).new
   end
 
   {% for line in [:row.id, :col.id] %}
     def click_{{line}}({{line}}_i)
-      wait = "sleep 0.04"
       prev = false
       line = @field.{{line}}s[{{line}}_i]
       line.each_with_index do |cell, {{line == :row ? :col_i.id : :row_i.id}}|
         if cell.full?
           if !@done.includes?({row_i, col_i})
-            send(
-              "mousemove",
+            @window.move_mouse(
               lerp(@play_area.left, @play_area.right, col_i*2 + 1, @field.width*2),
               lerp(@play_area.top, @play_area.bottom, row_i*2 + 1, @field.height*2),
-              wait
             )
-            send "mousedown 1", wait unless prev
+            sleep 0.04
+            unless prev
+              @window.mouse_down(:left)
+              sleep 0.04
+            end
             @done << {row_i, col_i}
             prev = true
           end
         elsif prev
           prev = false
-          send "mouseup 1", wait
+          @window.mouse_up(:left)
+          sleep 0.04
         end
       end
-      send "mouseup 1", wait if prev
+      if prev
+        @window.mouse_up(:left)
+        0.04
+      end
     end
   {% end %}
 
@@ -261,11 +263,6 @@ class SolutionClicker
       end
     end
   end
-
-  def finish
-    @xdotool.input.close
-    @xdotool.wait
-  end
 end
 
 
@@ -278,17 +275,13 @@ field, play_area = recognize_field(StumpyPNG.read(filename))
 
 if ARGV.empty?
   solution_clicker = SolutionClicker.new(field, play_area)
-  begin
-    status = field.solve! do |(row, col)|
-      puts; puts field
-      print "#{100 * field.count &.known? / field.size}%\r"
-#       solution_clicker.click(row, col)
-    end
-    puts status
-    solution_clicker.click if status.solved?
-  ensure
-    solution_clicker.finish
+  status = field.solve! do |(row, col)|
+    puts; puts field
+    print "#{100 * field.count &.known? / field.size}%\r"
+    # solution_clicker.click(row, col)
   end
+  puts status
+  solution_clicker.click if status.solved?
 else
   status = field.solve! do
     puts; puts field

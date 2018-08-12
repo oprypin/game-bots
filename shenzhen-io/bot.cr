@@ -1,5 +1,7 @@
 require "colorize"
 require "stumpy_png"
+require "x_do"
+
 
 enum Suit
   Red
@@ -420,9 +422,6 @@ filename = ARGV.at(0) {
 img = StumpyPNG.read(filename)
 
 
-
-commands = [] of String
-
 solution = solve(img)
 if !solution
   STDERR.puts "Unsolvable"
@@ -430,28 +429,35 @@ if !solution
 end
 
 
-solution.each do |step|
-  w = "sleep 0.05"
-  if step
-    if step[0].is_a? Tuple
-      x, y = step[0].as(Tuple)
-      commands << "mousemove #{x+5} #{y+5}" << w << "mousedown 1" << w
-      x, y = step[1].as(Tuple)
-      commands << "mousemove #{x+5} #{y+5}" << w << "mouseup 1"
-      commands << "sleep 0.2"
-    else
-      x = step[0].as(Int32)
-      y = step[1].as(Int32)
-      commands << "mousemove #{x+2} #{y+2}" << w << "mousedown 1" << w << "mouseup 1"
-      commands << "sleep 0.5"
-    end
-  else
-    commands << "sleep 0.25"
-  end
-end
-
-
-#puts commands.join("\n")
 if ARGV.empty?
-  Process.run("xdotool", ["-"], input: IO::Memory.new(commands.join("\n")))
+  window = XDo.new.active_window
+
+  solution.each do |step|
+    if step
+      if step[0].is_a? Tuple
+        x, y = step[0].as(Tuple)
+
+        window.move_mouse(x+5, y+5)
+        sleep 0.05
+        window.mouse_down(:left)
+        sleep 0.05
+        x, y = step[1].as(Tuple)
+        window.move_mouse(x+5, y+5)
+        sleep 0.05
+        window.mouse_up(:left)
+        sleep 0.2
+      else
+        x = step[0].as(Int32)
+        y = step[1].as(Int32)
+        window.move_mouse(x+2, y+2)
+        sleep 0.05
+        window.mouse_down(:left)
+        sleep 0.05
+        window.mouse_up(:left)
+        sleep 0.5
+      end
+    else
+      sleep 0.25
+    end
+  end
 end
