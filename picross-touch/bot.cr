@@ -74,7 +74,7 @@ def bounds(points)
 end
 
 def find_regions(img)
-  x, y = {0, img.height / 2}
+  x, y = {0, img.height // 2}
   until img[x, y].to_rgb8 == {0, 0, 0}
     x += 1
   end
@@ -121,14 +121,14 @@ def field_size(img, area)
     y += 1
   end
 
-  {width / 2, height / 2}
+  {width // 2, height // 2}
 end
 
 def pos_to_pix(i, size, pixel_size)
   ((i + 0.5) / size * pixel_size).round.to_i
 end
 def pix_to_pos(x, size, pixel_size)
-  (x.to_f / pixel_size * size - 0.5).round.to_i
+  (x / pixel_size * size - 0.5).round.to_i
 end
 
 def find_digits(img, area, size)
@@ -159,11 +159,11 @@ def find_digits(img, area, size)
 end
 
 private def gray(color : StumpyCore::RGBA)
-  (color.r.to_i + color.g.to_i + color.b.to_i) / (3 * 256)
+  (color.r.to_i + color.g.to_i + color.b.to_i) // (3 * 256)
 end
 
 private def lerp(start, finish, num, denom = 1)
-  start + (finish - start) * num / denom
+  start + (finish - start) * num // denom
 end
 
 private def compare_symbols(img1, area1, img2, area2)
@@ -195,14 +195,14 @@ def recognize_field(img)
   rows_area, cols_area, play_area = find_regions(img)
   field_width, field_height = field_size(img, play_area)
 
-  rows_width = (rows_area.width.to_f / play_area.width * field_width).round.to_i
+  rows_width = (rows_area.width / play_area.width * field_width).round.to_i
   rows = Array.new(field_height) { Array.new(rows_width) { "" } }
   find_digits(img, rows_area, {rows_width, field_height}) do |area, pos|
     rows[pos.last][pos.first] += recognize_digit(img, area).to_s
   end
   rows = rows.map(&.reject(&.empty?).map(&.to_i))
 
-  cols_height = (cols_area.height.to_f / play_area.height * field_height).round.to_i
+  cols_height = (cols_area.height / play_area.height * field_height).round.to_i
   cols = Array.new(field_width) { Array.new(cols_height) { "" } }
   find_digits(img, cols_area, {field_width, cols_height}) do |area, pos|
     cols[pos.first][pos.last] += recognize_digit(img, area).to_s
@@ -266,7 +266,7 @@ class SolutionClicker
 end
 
 
-filename = ARGV.at(0) {
+filename = ARGV.fetch(0) {
   `import -window root screenshot.png`
   "screenshot.png"
 }
@@ -277,7 +277,7 @@ if ARGV.empty?
   solution_clicker = SolutionClicker.new(field, play_area)
   status = field.solve! do |(row, col)|
     puts; puts field
-    print "#{100 * field.count &.known? / field.size}%\r"
+    print "#{100 * field.count &.known? // field.size}%\r"
     # solution_clicker.click(row, col)
   end
   puts status
@@ -285,7 +285,7 @@ if ARGV.empty?
 else
   status = field.solve! do
     puts; puts field
-    print "#{100 * field.count &.known? / field.size}%\r"
+    print "#{100 * field.count &.known? // field.size}%\r"
   end
   puts status
 end

@@ -1,4 +1,3 @@
-require "nonograms/nonogram"
 require "crystal-fann"
 require "stumpy_core"
 require "stumpy_png"
@@ -59,7 +58,7 @@ def edges_at(img : StumpyCore::Canvas, x : Int32, y : Int32) : Array({Int32, Int
     }
     -(neigh.max - neigh.min)
   }
-  pxs.first(pxs.size / 4)
+  pxs.first(pxs.size // 4)
 end
 
 FIELD_POSITIONS = begin
@@ -74,7 +73,7 @@ FIELD_POSITIONS = begin
 end
 
 def img_pos(x : Int32, y : Int32) : {Int32, Int32}
-  {FIELD_X + FIELD_DX * (x * 2 - y) / 2, FIELD_Y + FIELD_DY * y}
+  {FIELD_X + FIELD_DX * (x * 2 - y) // 2, FIELD_Y + FIELD_DY * y}
 end
 
 TRAIN_CASES = Marble.values.map { |m|
@@ -96,8 +95,8 @@ ANN = if File.file?("network.fann")
   Fann::Network::Standard.new("network.fann")
 else
   STDERR.puts "Teaching network..."
-  ann = Fann::Network::Standard.new(PIXELS_TO_SCAN.size, [PIXELS_TO_SCAN.size/2,
-                                                          PIXELS_TO_SCAN.size/4], Marble.values.size)
+  ann = Fann::Network::Standard.new(PIXELS_TO_SCAN.size, [PIXELS_TO_SCAN.size//2,
+                                                          PIXELS_TO_SCAN.size//4], Marble.values.size)
   rng = Random.new(0)
 
   (FIELD_POSITIONS.size*15).times do
@@ -259,7 +258,7 @@ def step(state : State)
 end
 
 
-filename = ARGV.at(0) {
+filename = ARGV.fetch(0) {
   `import -window root screenshot.png`
   "screenshot.png"
 }

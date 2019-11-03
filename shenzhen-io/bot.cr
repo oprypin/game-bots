@@ -186,7 +186,7 @@ class State
 
     {self.stacks.map(&.size).max, 11}.max.times do |i|
       self.stacks.each do |stack|
-        io << (stack.at(i) { ' ' }) << ' '
+        io << (stack.fetch(i) { ' ' }) << ' '
       end
       io << '\n'
     end
@@ -414,7 +414,7 @@ end
 
 
 
-filename = ARGV.at(0) {
+filename = ARGV.fetch(0) {
   `import -window root screenshot.png`
   "screenshot.png"
 }
