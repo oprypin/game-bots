@@ -1,0 +1,22 @@
+name: molek-syntez
+version: 1.0.0
+
+authors:
+  - Oleh Prypin <oleh@pryp.in>
+
+dependencies:
+  stumpy_core:
+    github: stumpycr/stumpy_core
+    version: "~> 1.9.1"
+  stumpy_png:
+    github: stumpycr/stumpy_png
+    version: "~> 4.5.2"
+  x_do:
+    github: woodruffw/x_do.cr
+    version: "~> 0.8.0"
+
+targets:
+  bot:
+    main: bot.cr
+
+crystal: 0.29.0
