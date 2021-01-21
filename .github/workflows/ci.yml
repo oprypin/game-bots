@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 6 * * 6'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [molek-syntez, opus-magnum, picross-touch, shenzhen-io]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{matrix.project}}
+    env:
+      SHARDS_OPTS: --ignore-crystal-version
+    steps:
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: oprypin/install-crystal@v1
+        with:
+          shards: latest
+      - name: Install packages
+        run: >
+          sudo apt-get -qy install
+          $(grep -q x_do shard.yml && echo libxdo-dev)
+          $(grep -q fann shard.yml && echo libfann-dev)
+      - name: Install dependencies
+        run: shards install
+      - name: Build
+        run: shards build

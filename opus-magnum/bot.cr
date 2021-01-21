@@ -7,9 +7,9 @@ require "x_do"
 enum Marble
   None = -1
   Salt = 0
-  Air, Fire, Water, Earth
-  Vitae, Mors, Quintessence, Quicksilver
-  Lead, Tin, Iron, Copper, Silver, Gold
+  Air; Fire; Water; Earth
+  Vitae; Mors; Quintessence; Quicksilver
+  Lead; Tin; Iron; Copper; Silver; Gold
 
   def symbol
     case self

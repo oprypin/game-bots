@@ -7,6 +7,7 @@ authors:
 dependencies:
   nonograms:
     github: oprypin/crystal-nonograms
+    branch: master
   stumpy_core:
     github: stumpycr/stumpy_core
     version: "~> 1.9.1"
