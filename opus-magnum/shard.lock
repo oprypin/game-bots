@@ -1,8 +1,8 @@
 version: 2.0
 shards:
   crystal-fann:
-    git: https://github.com/NeuraLegion/crystal-fann.git
-    version: 1.1.1
+    git: https://github.com/neuralegion/crystal-fann.git
+    version: 1.2.0
 
   stumpy_core:
     git: https://github.com/stumpycr/stumpy_core.git
@@ -10,9 +10,9 @@ shards:
 
   stumpy_png:
     git: https://github.com/stumpycr/stumpy_png.git
-    version: 5.0.0
+    version: 5.0.1
 
   x_do:
     git: https://github.com/woodruffw/x_do.cr.git
-    version: 0.8.1
+    version: 0.8.3
 
