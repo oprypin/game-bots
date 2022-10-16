@@ -21,7 +21,7 @@ jobs:
       SHARDS_OPTS: --ignore-crystal-version
     steps:
       - name: Download source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Crystal
         uses: oprypin/install-crystal@v1
         with:

@@ -243,9 +243,11 @@ def step(state : State)
           yield Set{a, b}
         end
       when Marble::Quintessence
-        Array.each_product(
-          [a], buckets[Marble::Air], buckets[Marble::Fire],
-          buckets[Marble::Water], buckets[Marble::Earth], reuse: true
+        Indexable.each_cartesian(
+          [
+            [a], buckets[Marble::Air], buckets[Marble::Fire],
+            buckets[Marble::Water], buckets[Marble::Earth]
+          ], reuse: true
         ) do |product|
           yield product.to_set
         end rescue nil
